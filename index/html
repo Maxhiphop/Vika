@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Вика — моя любовь</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto:wght@300;500&display=swap" rel="stylesheet">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(135deg, #ff99cc, #ffe6f0);
+      color: #ffe6f0;
+      overflow-x: hidden;
+    }
+
+    header, .button-container, main, footer {
+      position: relative;
+      z-index: 1;
+    }
+
+    header {
+      background: linear-gradient(135deg, #ff66b3, #cc0066);
+      padding: 70px 20px;
+      text-align: center;
+      border-bottom-left-radius: 50px;
+      border-bottom-right-radius: 50px;
+      box-shadow: 0 12px 40px rgba(255, 102, 179, 0.5);
+    }
+
+    header h1 {
+      font-family: 'Pacifico', cursive;
+      font-size: 2.6em;
+      color: #fff;
+      margin: 0;
+      text-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+      animation: fadeIn 2s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Контейнер с кнопками */
+    .button-container {
+      position: fixed;
+      top: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .button-container button {
+      background: linear-gradient(135deg, #ff66a3, #ff3385);
+      border: none;
+      color: white;
+      padding: 12px 22px;
+      font-size: 1em;
+      border-radius: 35px;
+      cursor: pointer;
+      box-shadow: 0 6px 15px rgba(255, 102, 163, 0.5);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      margin: 5px;
+      flex: 1 1 auto;
+      min-width: 130px;
+      text-align: center;
+    }
+
+    .button-container button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 20px rgba(255, 51, 133, 0.6);
+    }
+
+    .bubble {
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      background: rgba(255, 255, 255, 0.6);
+      border: 3px solid #ff99cc;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #000;
+      text-align: center;
+      font-size: 0.9em;
+      padding: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      animation: moveBubble linear infinite alternate;
+      font-weight: 400;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 0 15px rgba(255, 153, 204, 0.6);
+      z-index: 2;
+    }
+
+    .bubble:hover {
+      background-color: rgba(255, 255, 255, 0.85);
+      transform: scale(1.1) rotate(3deg);
+      box-shadow: 0 0 20px #ff80bf;
+    }
+
+    @keyframes moveBubble {
+      0%   { transform: translate(0, 0); }
+      100% { transform: translate(var(--tx), var(--ty)); }
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px 20px;
+      background: linear-gradient(135deg, #660033, #4d0033);
+      color: #ffb3d9;
+      font-size: 1.1em;
+      border-top-left-radius: 40px;
+      border-top-right-radius: 40px;
+      box-shadow: 0 -8px 25px rgba(255, 128, 191, 0.3);
+    }
+
+    /* Лепестки сакуры */
+    .sakura {
+      position: fixed;
+      top: -10px;
+      font-size: 24px;
+      animation: fall linear infinite;
+      z-index: 0;
+      pointer-events: none;
+    }
+    @keyframes fall {
+      0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(360deg); opacity: 0.3; }
+    }
+
+    /* Салют сердечек */
+    .heart {
+      position: fixed;
+      font-size: 24px;
+      color: red;
+      animation: explode 1.5s ease-out forwards;
+      pointer-events: none;
+      z-index: 10;
+    }
+    @keyframes explode {
+      0% { transform: scale(0.5) translate(0,0); opacity: 1; }
+      100% { transform: scale(1.5) translate(var(--x), var(--y)); opacity: 0; }
+    }
+
+    @media screen and (max-width: 480px) {
+      .bubble {
+        width: 75px;
+        height: 75px;
+        font-size: 0.8em;
+      }
+      header h1 {
+        font-size: 2em;
+      }
+      .button-container button {
+        font-size: 0.9em;
+        padding: 10px 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="button-container">
+    <button onclick="addBubble()">Добавить сердечко</button>
+    <button onclick="surprise()">🎁 Сюрприз</button>
+  </div>
+
+  <header>
+    <h1>Вика — свет моего сердца 💖</h1>
+  </header>
+
+  <main></main>
+
+  <footer>
+    <p>Сделано с любовью ❤️ для Вики </p>
+  </footer>
+
+  <script>
+    const texts = [
+      "Вика— ты смысл каждого моего утра.",
+      "С тобой каждый день как праздник.",
+      "Ты — музыка моего сердца.",
+      "Люблю тебя больше, чем слова могут передать.",
+      "Ты — моя вечность в этом мире.",
+      "Ты украшаешь мою жизнь светом и добром.",
+      "С тобой хочется жить, мечтать и дышать.",
+      "Ты — моя стихия, моё вдохновение.",
+      "В твоих глазах отражается вся моя любовь.",
+      "Твоё имя — мой любимый звук.",
+      "Я влюбляюсь в тебя заново каждый день.",
+      "С тобой я сильнее, чем когда-либо.",
+      "Ты — та, о которой я мечтал.",
+      "Ты — моё чудо в реальности.",
+      "Я благодарен вселенной за тебя.",
+      "Ты делаешь мир ярче одним взглядом.",
+      "С тобой легко быть собой.",
+      "Твоя улыбка лечит мою душу.",
+      "Ты — мой дом и моя звезда.",
+      "Ты делаешь меня лучше.",
+      "С тобой я забыл, что такое одиночество.",
+      "Ты — подарок судьбы.",
+      "Ты даёшь смысл каждому моменту.",
+      "С тобой нет границ счастью.",
+      "Ты — мой самый любимый человек.",
+      "Ты наполняешь меня теплом.",
+      "Ты — мой источник вдохновения.",
+      "Твои прикосновения незабываемы.",
+      "Я в тебе нашёл всё, о чём мечтал.",
+      "Ты — мой рай на Земле.",
+      "Ты создаёшь волшебство.",
+      "С тобой любое место — дом.",
+      "Ты — как рассвет после долгой ночи.",
+      "Ты — моя вселенная.",
+      "Твоя любовь — мой главный ресурс.",
+      "С тобой я чувствую себя живым.",
+      "Ты наполняешь моё сердце смыслом.",
+      "Ты — мой внутренний свет.",
+      "Ты — моё вдохновение в каждом вздохе.",
+      "Ты — моё настоящее и будущее.",
+      "Ты наполняешь меня нежностью.",
+      "Я в тебе растворяюсь.",
+      "Ты — мой покой и моя буря.",
+      "Ты — моё всё.",
+      "Люблю тебя без причины.",
+      "Ты — мой самый счастливый выбор.",
+      "Ты — мой смысл жить.",
+      "Ты — моя душа в другом теле.",
+      "Ты — моя навсегда.",
+      "С каждым днём люблю тебя сильнее.",
+      "Ты — как дыхание. Без тебя — никак.",
+      "Ты — любовь всей моей жизни.",
+      "Я не представляю жизни без тебя.",
+      "С тобой всё становится возможным.",
+      "Ты — часть моего сердца.",
+      "Ты делаешь меня лучше каждый день.",
+      "Ты — чудо, которое я не заслужил, но получил.",
+      "Ты — моя правда среди иллюзий.",
+      "Ты — мой нежный космос.",
+      "Ты — моя стабильность и хаос.",
+      "Ты — моя поддержка в любой буре.",
+      "Ты — моя самая красивая мысль.",
+      "Ты — моя гордость.",
+      "Ты — моя загадка, которую не хочу решать.",
+      "Ты — самая любимая причина улыбаться.",
+      "Ты — мой бесконечный восторг.",
+      "Ты — мой смысл возвращаться домой.",
+      "Ты — моя истина.",
+      "Ты — моя молитва.",
+      "Ты — мой свет в темноте.",
+      "Ты — мой путь.",
+      "Ты — моя вера.",
+      "Ты — причина, по которой я просыпаюсь.",
+      "Ты — моя история.",
+      "Ты — моя книга, которую я хочу читать вечно.",
+      "Ты — мой герой.",
+      "Ты — моя муза.",
+      "Ты — моя самая красивая песня.",
+      "Ты — моя мечта, ставшая реальностью.",
+      "Ты — мой смысл и моя цель.",
+      "Ты — моя поддержка и вдохновение.",
+      "Ты — моё солнце и моя луна.",
+      "Ты — мой цветок в пустыне.",
+      "Ты — мой луг весной.",
+      "Ты — мой покой.",
+      "Ты — мой восторг.",
+      "Ты — моё сердце.",
+      "Ты — мой маяк.",
+      "Ты — моя реальность лучше всех фантазий.",
+      "Ты — моя победа.",
+      "Ты — моя сила.",
+      "Ты — мой смысл в хаосе.",
+      "Ты — моё лучшее .",
+      "Ты — мой ежедневный выбор.",
+      "Ты — моя тихая радость.",
+      "Ты — мой ежедневный повод сказать Я ТЕБЯ ЛЮБЛЮ.",
+      "Ты — моя навсегда."
+    ];
+
+    // Создание пузырька
+    function addBubble() {
+      const index = Math.floor(Math.random() * texts.length);
+      const bubble = document.createElement('div');
+      bubble.className = 'bubble';
+      const x = Math.random() * 80;
+      const y = Math.random() * 80;
+      const tx = (Math.random() * 20 - 10) + 'vw';
+      const ty = (Math.random() * 20 - 10) + 'vh';
+
+      bubble.style.top = x + 'vh';
+      bubble.style.left = y + 'vw';
+      bubble.style.setProperty('--tx', tx);
+      bubble.style.setProperty('--ty', ty);
+      bubble.style.animationDuration = (12 + Math.random() * 15) + 's';
+
+      bubble.innerHTML = '♡';
+      bubble.onclick = () => {
+        bubble.innerHTML = texts[index];
+        bubble.style.color = '#000';
+      };
+
+      document.body.appendChild(bubble);
+    }
+
+    // Лепестки сакуры
+    function createSakura() {
+      const sakura = document.createElement('div');
+      sakura.className = 'sakura';
+      sakura.innerHTML = '🌸';
+      sakura.style.left = Math.random() * 100 + 'vw';
+      sakura.style.animationDuration = (5 + Math.random() * 5) + 's';
+      document.body.appendChild(sakura);
+
+      setTimeout(() => sakura.remove(), 10000);
+    }
+    setInterval(createSakura, 500);
+
+    // Салют сердечек
+    function surprise() {
+      for (let i = 0; i < 20; i++) {
+        const heart = document.createElement('div');
+        heart.className = 'heart';
+        heart.innerHTML = '❤️';
+        heart.style.left = '50%';
+        heart.style.top = '50%';
+        const angle = Math.random() * 2 * Math.PI;
+        const distance = Math.random() * 200;
+        const x = Math.cos(angle) * distance + 'px';
+        const y = Math.sin(angle) * distance + 'px';
+        heart.style.setProperty('--x', x);
+        heart.style.setProperty('--y', y);
+        document.body.appendChild(heart);
+
+        setTimeout(() => heart.remove(), 1500);
+      }
+    }
+  </script>
+</body>
+</html>
